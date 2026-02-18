@@ -1,6 +1,6 @@
-import React from "react";
+import type React from "react";
 import Link from "next/link";
-import { ProductDTO } from "../dto/productDTO";
+import type { ProductDTO } from "../dto/productDTO";
 
 interface ProductCardProps {
     product: ProductDTO;

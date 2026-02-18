@@ -1,6 +1,6 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { ProductDAL } from "@/modules/products/dal/productDAL";
-import { ProductDTO } from "@/modules/products/dto/productDTO";
+import type { ProductDTO } from "@/modules/products/dto/productDTO";
 
 interface ProductPageProps {
     params: Promise<{ slug: string }>;

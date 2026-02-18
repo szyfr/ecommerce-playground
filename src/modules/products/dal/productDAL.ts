@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { products } from "@/data/products";
-import { ProductDTO } from "../dto/productDTO";
+import type { ProductDTO } from "../dto/productDTO";
 
 export const ProductDAL = {
     getAll: async (): Promise<ProductDTO[]> => {

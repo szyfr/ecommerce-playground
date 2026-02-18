@@ -2,15 +2,18 @@ import { NextResponse } from "next/server";
 import { products } from "@/data/products";
 
 export async function GET(
-	_request: Request,
-	{ params }: { params: Promise<{ slug: string }> },
+    _request: Request,
+    { params }: { params: Promise<{ slug: string }> },
 ) {
-	const { slug } = await params;
-	const product = products.find((p) => p.slug === slug);
+    const { slug } = await params;
+    const product = products.find((p) => p.slug === slug);
 
-	if (!product) {
-		return NextResponse.json({ error: "Product not found" }, { status: 404 });
-	}
+    if (!product) {
+        return NextResponse.json(
+            { error: "Product not found" },
+            { status: 404 },
+        );
+    }
 
-	return NextResponse.json(product);
+    return NextResponse.json(product);
 }

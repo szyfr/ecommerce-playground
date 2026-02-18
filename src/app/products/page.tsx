@@ -1,7 +1,7 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { ProductDAL } from "@/modules/products/dal/productDAL";
 import { ProductCard } from "@/modules/products/components/ProductCard";
-import { ProductDTO } from "@/modules/products/dto/productDTO";
+import type { ProductDTO } from "@/modules/products/dto/productDTO";
 
 // Page Metadata (SEO)
 export const metadata: Metadata = {
