@@ -1,17 +1,23 @@
-import type { Metadata } from "next";
+import { cache } from "react";
+import { Metadata } from "next";
 import { ProductDAL } from "@/modules/products/dal/productDAL";
-import type { ProductDTO } from "@/modules/products/dto/productDTO";
+import { ProductDTO } from "@/modules/products/dto/productDTO";
 
 interface ProductPageProps {
     params: Promise<{ slug: string }>;
 }
 
-// Generate per-product metadata for SEO
+// Memoized fetch function to avoid duplicate requests
+const getProduct = cache(async (slug: string): Promise<ProductDTO> => {
+    return await ProductDAL.getBySlug(slug);
+});
+
+// Generate SEO metadata for each product
 export async function generateMetadata({
     params,
 }: ProductPageProps): Promise<Metadata> {
     const { slug } = await params;
-    const product: ProductDTO = await ProductDAL.getBySlug(slug);
+    const product = await getProduct(slug);
 
     return {
         title: `${product.name} | My E-commerce Store`,
@@ -25,11 +31,12 @@ export async function generateMetadata({
     };
 }
 
+// Server Component for product page
 export default async function ProductPage({ params }: ProductPageProps) {
     const { slug } = await params;
-    const product: ProductDTO = await ProductDAL.getBySlug(slug);
+    const product = await getProduct(slug);
 
-    // JSON-LD structured data for this product
+    // JSON-LD structured data for SEO
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "Product",
@@ -69,14 +76,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <p className="text-sm text-gray-500">
                         {product.stock > 0 ? "In Stock" : "Out of Stock"}
                     </p>
-                    {/* Example "Add to Cart" button */}
                     <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                         Add to Cart
                     </button>
                 </div>
             </div>
 
-            {/* JSON-LD structured data */}
+            {/* JSON-LD for structured data */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
